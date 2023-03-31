@@ -1,11 +1,12 @@
-import mysql.connector
+import pyodbc
 from datetime import date
 
 today = date.today()
-mydb = mysql.connector.connect(
-    host = "localhost",
-    user = "user",
-    password = "pass"
+mydb = pyodbc.connector.connect(
+    Driver="{SQL Server Native Client 11.0};"
+    "Server=server_name;"
+    "Database=dbname;"
+    "Trusted_connection=yes;"
 )
 
 cursor = mydb.cursor()
@@ -23,6 +24,8 @@ def Sale (shareName,targetWithdraw, User):
     # Updates sell date
     cursor.execute("UPDATE Stock SET Sell_Date ="+today+" WHERE Share_Name = "+shareName)
 
+    mydb.close()
+
 def MoneyTransfer (User1,User2,TransferAmount):
     # Takes the amount in Users Wallets
     User1Wallet = cursor.execute("SELECT Wallet_value FROM User WHERE User_id = "+User1)
@@ -34,4 +37,4 @@ def MoneyTransfer (User1,User2,TransferAmount):
     # Updates value in User2 Wallet (receiver)
     cursor.execute("UPDATE User SET Wallet_value = "+(User2Wallet-TransferAmount)+"WHERE User_id = "+User2)
 
-    
+    mydb.close()
