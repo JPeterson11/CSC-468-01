@@ -1,61 +1,25 @@
 apiVersion: apps/v1
-
-
-
-
 kind: Deployment
-
-
 metadata:
-
-
- name: MySql
-
-
+ name: mysql
 spec:
-
-
  replicas: 1
-
-
  selector:
-
-
    matchLabels:
-
-
-     app: MySql
-
-
+     app: mysql
+ strategy:
+   type: Recreate
  template:
-
-
    metadata:
-
-
      labels:
-
-
-       app: MySql
-
-
+       app: mysql
    spec:
-
-
      containers:
-
-
-     - name: MySql
-
-
-       image: juliakush01/mysql
-
-
+     - image: juliakush01/mysql
+       name: mysql
+       env:
+       - name: MYSQL_ROOT_PASSWORD
+         value: my-secret-pw
        ports:
-
-
          - name: http-port
-
-
            containerPort: 3306
-
