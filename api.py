@@ -1,7 +1,13 @@
+import pandas as pd
+import cufflinks as cf
+import numpy as np
+import yfinance as yf
 import requests
+from datetime import datetime
 
 api_key = "76aca232cf48b7732e7d62cf2fd91072"
-
+cf.set_config_file(theme='pearl', world_readable=False)
+cf.go_offline()
 class EquityValue:
     @staticmethod
     def get_stock_quote(ticker):
@@ -12,10 +18,19 @@ class EquityValue:
             return data
         else:
             print(f"Error: {response.status_code}")
-
+    def get_stock_ratios(ticker):
+        url = f"https://financialmodelingprep.com/api/v3/ratios/{ticker}?limit=1&apikey={api_key}"
+        response = requests.get(url)
+        data = response.json()
+        df = pd.DataFrame(data)
+        df = df.T
+    #  current_ratio = ratio_df.loc['currentRatio']
+    # quick_ratio = ratio_df.loc['quickRatio']
+        return df
 class PortValue:
     def __init__(self):
         self.portfolio = {}
+        user = "brandon"
 
     def get_portfolio_value(self):
         total_value = 0
@@ -31,11 +46,11 @@ class PortValue:
             self.portfolio[ticker] += quantity
         else:
             self.portfolio[ticker] = quantity
-
-            
+        print(self.portfolio)
 
 class Stock_Transaction:
     def __init__(self, port_value):
+        self.user = None
         self.ticker = None
         self.quantity = None
         self.transaction_type = None
@@ -49,35 +64,51 @@ class Stock_Transaction:
             return False
         else:
             price = quote[0]['price']
-            print(f"{self.ticker} is currently trading at {price:.2f}")
-            buy_stock = input("Would you like to purchase this stock? (y/n): ")
-            if buy_stock.lower() == "y":
+            print(f"{self.ticker.upper()} is currently trading at {price:.2f}")
+
+            transaction_input = input("Would you like to buy or sell this stock? (buy/sell): ")
+            if transaction_input.lower() == "buy":
                 self.transaction_type = "buy"
                 self.quantity = int(input("Enter quantity: "))
                 return True
+            elif transaction_input.lower() == "sell":
+                if self.ticker in self.port_value.portfolio and self.port_value.portfolio[self.ticker] >= self.quantity:
+                    self.transaction_type = "sell"
+                    self.quantity = int(input("Enter quantity"))
+                return True
             else:
-                return False
+                print("thank you")
+
 
     def execute(self):
+        time = datetime.now()
         quote = EquityValue.get_stock_quote(self.ticker)
+        ratio = EquityValue.get_stock_ratios(self.ticker)
+
+
         if not quote:
             return
-
         price = quote[0]['price']
+        print(ratio)
 
         if self.transaction_type == "buy":
             cost = price * self.quantity
-            print(f"Bought {self.quantity} shares of {self.ticker} at ${price:.2f} each, for a total cost of ${cost:.2f}")
+            print(f"Bought {self.quantity} shares of {self.ticker} at ${price:.2f} each, for a total cost of ${cost:.2f} at {time}")
             self.port_value.update_portfolio(self.ticker, self.quantity)
         elif self.transaction_type == "sell":
-            revenue = price * self.quantity
-            print(f"Sold {self.quantity} shares of {self.ticker} at ${price:.2f} each, for a total revenue of ${revenue:.2f}")
-            self.port_value.update_portfolio(self.ticker, -self.quantity)
+            if self.ticker in self.port_value.portfolio and self.port_value.portfolio[self.ticker] >= self.quantity:
+                cost = price * self.quantity
+                print(f"Sold {self.quantity} shares of {self.ticker} at ${price:.2f} each, for a total revenue of ${cost:.2f} at {time}")
+                self.port_value.update_portfolio(self.ticker, -self.quantity)
+            else:
+                print(f"Error: Not enough quantity of {self.ticker} to sell")
         else:
             print("Invalid transaction type")
             return
 
         self.port_value.get_portfolio_value()
+        self.port_value.portfolio.items()
+
 
 def main():
     port_value = PortValue()
@@ -88,8 +119,5 @@ def main():
         else:
             break
 
-
 if __name__ == "__main__":
     main()
-
-
