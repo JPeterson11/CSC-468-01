@@ -5,6 +5,16 @@ import yfinance as yf
 import requests
 from datetime import datetime
 
+today = date.today()
+#Connection to the database
+mydb = pyodbc.connector.connect(
+    Driver="{SQL Server Native Client 11.0};"
+    "Server=server_name;"
+    "Database=dbname;"
+    "Trusted_connection=yes;"
+    
+)
+cursor = mydb.cursor()
 api_key = "76aca232cf48b7732e7d62cf2fd91072"
 cf.set_config_file(theme='pearl', world_readable=False)
 cf.go_offline()
@@ -100,6 +110,7 @@ class Stock_Transaction:
                 cost = price * self.quantity
                 print(f"Sold {self.quantity} shares of {self.ticker} at ${price:.2f} each, for a total revenue of ${cost:.2f} at {time}")
                 self.port_value.update_portfolio(self.ticker, -self.quantity)
+                cursor.execute("UPDATE")
             else:
                 print(f"Error: Not enough quantity of {self.ticker} to sell")
         else:
@@ -109,7 +120,19 @@ class Stock_Transaction:
         self.port_value.get_portfolio_value()
         self.port_value.portfolio.items()
 
+class MoneyTransfer:
+    def MoneyTransfer (User1,User2,TransferAmount):
+        # Takes the amount in Users Wallets
+        User1Wallet = cursor.execute("SELECT Wallet_value FROM User WHERE User_id = "+User1)
+        User2Wallet = cursor.execute("SELECT Wallet_value FROM User WHERE User_id = "+User2)
 
+        # Updates the value in User1 Wallet (sender)
+        cursor.execute("UPDATE User SET Wallet_value = "+(User1Wallet-TransferAmount)+"WHERE User_id = "+User1)
+
+        # Updates value in User2 Wallet (receiver)
+        cursor.execute("UPDATE User SET Wallet_value = "+(User2Wallet-TransferAmount)+"WHERE User_id = "+User2)
+        mydb.commit()
+        mydb.close()
 def main():
     port_value = PortValue()
     transaction = Stock_Transaction(port_value)
