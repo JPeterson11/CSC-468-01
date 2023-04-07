@@ -3,7 +3,8 @@ import cufflinks as cf
 import numpy as np
 import yfinance as yf
 import requests
-from datetime import datetime
+from datetime import date, datetime
+import pyodbc
 
 today = date.today()
 #Connection to the database
@@ -15,6 +16,7 @@ mydb = pyodbc.connector.connect(
     
 )
 cursor = mydb.cursor()
+
 api_key = "76aca232cf48b7732e7d62cf2fd91072"
 cf.set_config_file(theme='pearl', world_readable=False)
 cf.go_offline()
@@ -94,7 +96,7 @@ class Stock_Transaction:
         time = datetime.now()
         quote = EquityValue.get_stock_quote(self.ticker)
         ratio = EquityValue.get_stock_ratios(self.ticker)
-
+        wallet_balance = cursor.execute("SELECT Wallet_Balance FROM User WHERE User = "+self.user)
 
         if not quote:
             return
@@ -105,12 +107,25 @@ class Stock_Transaction:
             cost = price * self.quantity
             print(f"Bought {self.quantity} shares of {self.ticker} at ${price:.2f} each, for a total cost of ${cost:.2f} at {time}")
             self.port_value.update_portfolio(self.ticker, self.quantity)
+            cursor.execute("UPDATE User SET share_holdings = "+self.ticker+" WHERE User = "+self.user)
+            mydb.commit()
+            cursor.execute("UPDATE User SET buy_price = "+(price)+" WHERE User = "+self.user)
+            mydb.commit()
+            cursor.execute("UPDATE User SET Wallet_Balance = "+(wallet_balance - price)"WHERE User = "+self.user)
+            cursor.execute()
+            mydb.close()
         elif self.transaction_type == "sell":
             if self.ticker in self.port_value.portfolio and self.port_value.portfolio[self.ticker] >= self.quantity:
                 cost = price * self.quantity
                 print(f"Sold {self.quantity} shares of {self.ticker} at ${price:.2f} each, for a total revenue of ${cost:.2f} at {time}")
                 self.port_value.update_portfolio(self.ticker, -self.quantity)
-                cursor.execute("UPDATE")
+                cursor.execute("DELETE User SET share_holdings = "+self.ticker+" WHERE User = "+self.user)
+                mydb.commit()
+                cursor.execute("DELETE User SET buy_price = "+(price)+" WHERE User = "+self.user)
+                mydb.commit()
+                cursor.execute("UPDATE User SET Wallet_Balance = "+(wallet_balance + price)"WHERE User = "+self.user)
+                cursor.execute()
+                mydb.close()
             else:
                 print(f"Error: Not enough quantity of {self.ticker} to sell")
         else:
@@ -133,6 +148,7 @@ class MoneyTransfer:
         cursor.execute("UPDATE User SET Wallet_value = "+(User2Wallet-TransferAmount)+"WHERE User_id = "+User2)
         mydb.commit()
         mydb.close()
+
 def main():
     port_value = PortValue()
     transaction = Stock_Transaction(port_value)
