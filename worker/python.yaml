@@ -18,4 +18,4 @@ spec:
      - image: python:2.7
        name: worker
        ports:
-           - containerPort: 3308
+           - containerPort: 5000
