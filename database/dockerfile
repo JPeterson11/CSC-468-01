@@ -1,3 +1,5 @@
 FROM juliakush01/mysql
 ENV MYSQL_ROOT_PASSWORD my-secret-pw
+VOLUME ["/var/lib/mysql"]
+WORKDIR /var/lib/docker/volumes/30ef08dded4330aa11422c4b9245512edc583074f0df26b86610a86c10730f0a/_data
 EXPOSE 3306
