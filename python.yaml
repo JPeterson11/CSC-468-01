@@ -1,20 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: worker
+  name: api
 spec:
-  replicas: 4
+  replicas: 2
   selector:
     matchLabels:
-      app: worker
+      app: api
   template:
     metadata:
       labels:
-        app: worker
+        app: api
     spec:
       containers:
-      - name: worker
-        image:
-        ports:
-          - name: http-port
-            containerPort: 80
+        - name: deployment
+          image: jp923870/python
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+              protocol: TCP
