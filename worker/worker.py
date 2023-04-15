@@ -111,7 +111,7 @@ class Stock_Transaction:
             mydb.commit()
             cursor.execute("UPDATE User SET buy_price = "+(price)+" WHERE User = "+self.user)
             mydb.commit()
-            cursor.execute("UPDATE User SET Wallet_Balance = "+(wallet_balance - price)"WHERE User = "+self.user)
+            cursor.execute("UPDATE User SET Wallet_Balance = "+(wallet_balance - price)+"WHERE User = "+self.user)
             cursor.execute()
             mydb.close()
         elif self.transaction_type == "sell":
@@ -123,7 +123,7 @@ class Stock_Transaction:
                 mydb.commit()
                 cursor.execute("DELETE User SET buy_price = "+(price)+" WHERE User = "+self.user)
                 mydb.commit()
-                cursor.execute("UPDATE User SET Wallet_Balance = "+(wallet_balance + price)"WHERE User = "+self.user)
+                cursor.execute("UPDATE User SET Wallet_Balance = "+(wallet_balance + price)+"WHERE User = "+self.user)
                 cursor.execute()
                 mydb.close()
             else:
