@@ -8,4 +8,4 @@ RUN apt install unixodbc-bin -y
 RUN apt-get clean -y
 RUN pip install -r requirements.txt
 COPY . .
-CMD ["python3", "api.py"]
+CMD ["python3", "worker.py"]
