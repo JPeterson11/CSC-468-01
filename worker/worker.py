@@ -1,14 +1,13 @@
 import pandas as pd
 import cufflinks as cf
 import numpy as np
-import yfinance as yf
 import requests
 from datetime import date, datetime
 import pyodbc
 
 today = date.today()
 #Connection to the database
-mydb = pyodbc.connector.connect(
+mydb = pyodbc.connect(
     Driver="{SQL Server Native Client 11.0};"
     "Server=server_name;"
     "Database=dbname;"

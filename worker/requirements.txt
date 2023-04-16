@@ -1,1 +1,6 @@
 pyodbc
+pandas
+cufflinks
+numpy
+yfinance
+requests
