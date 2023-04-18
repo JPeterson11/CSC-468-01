@@ -8,7 +8,7 @@ import pyodbc
 today = date.today()
 #Connection to the database
 mydb = pyodbc.connect(
-    'DRIVER={FreeTDS};SERVER=172.17.0.0/16 docker;PORT=3306;DATABASE=STOCKS;UID=**;PWD=/app', autocommit=True)
+    'DRIVER={FreeTDS};SERVER=172.17.0.0/16;PORT=3306;DATABASE=STOCKS;UID=**;PWD=/app', autocommit=True)
 cursor = mydb.cursor()
 
 api_key = "76aca232cf48b7732e7d62cf2fd91072"
