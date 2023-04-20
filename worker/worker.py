@@ -8,7 +8,7 @@ import pyodbc
 today = date.today()
 #Connection to the database
 mydb = pyodbc.connect(
-    'DRIVER={FreeTDS};SERVER=127.0.0.1;PORT=3306;DATABASE=STOCKS;UID=juliakush;PWD=my-secret-password', autocommit=True)
+    'DRIVER={FreeTDS};SERVER=127.0.0.1;PORT=3306;DATABASE=STOCKS;UID=root;PWD=my-secret-password', autocommit=True)
 cursor = mydb.cursor()
 
 api_key = "76aca232cf48b7732e7d62cf2fd91072"
@@ -62,8 +62,7 @@ class Stock_Transaction:
         self.transaction_type = None
         self.port_value = port_value
 
-    
- '''   def get_input(self):
+    '''   def get_input(self):
         self.ticker = input("Enter ticker symbol: ")
         quote = EquityValue.get_stock_quote(self.ticker)
         if not quote:
@@ -87,7 +86,7 @@ class Stock_Transaction:
                 print("thank you")
                 
                 
-    ''''
+    '''
 
 
     def execute(self):
