@@ -62,7 +62,7 @@ class Stock_Transaction:
         self.transaction_type = None
         self.port_value = port_value
 
-    '''   def get_input(self):
+    ''' def get_input(self):
         self.ticker = input("Enter ticker symbol: ")
         quote = EquityValue.get_stock_quote(self.ticker)
         if not quote:
