@@ -9,3 +9,4 @@ CREATE TABLE 'user_info' (
   `share_holdings` varchar(50) NOT NULL,
   `buy_price` varchar(50) NOT NULL
 );
+GO

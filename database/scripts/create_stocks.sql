@@ -13,3 +13,4 @@ CREATE TABLE 'stock_info' (
   `sell_date` varchar(50) NOT NULL,
   `todays_date` varchar(50) NOT NULL
 );
+GO

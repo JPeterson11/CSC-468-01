@@ -1,4 +1,4 @@
-INSERT INTO "stock_info" (`stock_name`,
+INSERT INTO `stock_info` (`stock_name`,
   `recent_price`,
   `purchase_price`,
   `10_day_price`,
