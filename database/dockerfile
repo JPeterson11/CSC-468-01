@@ -2,4 +2,4 @@ FROM mysql:latest
 
 ENV MYSQL_DATABASE STOCKS
 
-COPY ./database/ /docker-entrypoint-initdb.d/
+COPY ./databse/scripts/ /docker-entrypoint-initdb.d/
