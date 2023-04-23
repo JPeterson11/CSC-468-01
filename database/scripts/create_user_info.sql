@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS `STOCKS`;
 GO
 USE `STOCKS`;
 GO
-CREATE TABLE 'user_info' (
+CREATE TABLE `user_info` (
   `user` varchar(100) NOT NULL,
   `password` varchar(50) NOT NULL,
   `wallet_balance` varchar(50) NOT NULL,

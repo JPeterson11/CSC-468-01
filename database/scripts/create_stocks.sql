@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS `STOCKS`;
 GO
 USE `STOCKS`;
 GO
-CREATE TABLE 'stock_info' (
+CREATE TABLE `stock_info` (
   `stock_name` varchar(100) NOT NULL,
   `recent_price` varchar(50) NOT NULL,
   `purchase_price` varchar(50) NOT NULL,
