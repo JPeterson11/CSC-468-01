@@ -9,4 +9,4 @@ VALUES
 ('Brandon Kohler', 'gorams', '2300', 'Microsoft', '200')
 ('Brian Giovinazzo', 'gorams1', '1500', 'Johnson and Johnson', '180')
 ('Jacob Peterson', 'gorams12', '3000', 'Tesla', '170')
-('Stephen Caliendo', 'gorams123', '1800', 'Google', '180')
+('Stephen Caliendo', 'gorams123', '1800', 'Google', '180');

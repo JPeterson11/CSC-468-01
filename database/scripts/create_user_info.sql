@@ -7,4 +7,4 @@ CREATE TABLE 'user_info' (
   'wallet_balance' varchar(50) NOT NULL,
   'share_holdings' varchar(50) NOT NULL,
   'buy_price' varchar(50) NOT NULL
-)
+);
