@@ -2,4 +2,6 @@ FROM mysql:latest
 
 ENV MYSQL_DATABASE STOCKS
 
-ADD ./scripts/ /docker-entrypoint-initdb.d/
+COPY ./scripts/ /docker-entrypoint-initdb.d/
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
