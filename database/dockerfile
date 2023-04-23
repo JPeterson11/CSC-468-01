@@ -3,5 +3,3 @@ FROM mysql:latest
 ENV MYSQL_DATABASE STOCKS
 
 COPY ./scripts/ /docker-entrypoint-initdb.d/
-
-ENTRYPOINT ["/docker-entrypoint.sh"]
