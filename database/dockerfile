@@ -1,8 +1,5 @@
-FROM mysql
-RUN mkdir -p /usr/wprk
-WORKDIR /usr/work
-COPY . /usr/work/
-RUN chmod +x /usr/work/import-data.sh
-ENV MYSQL_ROOT_PASSWORD my-secret-pw
-VOLUME ["/var/lib/mysql"]
-EXPOSE 3306
+FROM mysql:latest
+
+ENV MYSQL_DATABASE STOCKS
+
+COPY ./database/ /docker-entrypoint-initdb.d/
