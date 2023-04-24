@@ -24,15 +24,15 @@ class EquityValue:
             return data
         else:
             print(f"Error: {response.status_code}")
-    def get_stock_ratios(ticker):
-        url = f"https://financialmodelingprep.com/api/v3/ratios/{ticker}?limit=1&apikey={api_key}"
-        response = requests.get(url)
-        data = response.json()
-        df = pd.DataFrame(data)
-        df = df.T
+    #def get_stock_ratios(ticker):
+     #   url = f"https://financialmodelingprep.com/api/v3/ratios/{ticker}?limit=1&apikey={api_key}"
+      #  response = requests.get(url)
+       # data = response.json()
+        #df = pd.DataFrame(data)
+        #df = df.T
     #  current_ratio = ratio_df.loc['currentRatio']
     # quick_ratio = ratio_df.loc['quickRatio']
-        return df
+        #return df
 class PortValue:
     def __init__(self):
         self.portfolio = {}
