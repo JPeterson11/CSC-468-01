@@ -1,4 +1,3 @@
-CREATE DATABASE IF NOT EXISTS `STOCKS`;
 GO
 USE `STOCKS`;
 GO
@@ -11,6 +10,6 @@ CREATE TABLE `stock_info` (
   `quantity` varchar(50) NOT NULL,
   `purchase_date` varchar(50) NOT NULL,
   `sell_date` varchar(50) NOT NULL,
-  `todays_date` varchar(50) NOT NULL
+  `todays_date` date
 );
 GO
