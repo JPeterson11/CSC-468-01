@@ -3,13 +3,13 @@ import cufflinks as cf
 import numpy as np
 import requests
 from datetime import date, datetime
-import pyodbc
+import mysql.connecter
 
 today = date.today()
 #Connection to the database
-mydb = pyodbc.connect(
-    'DRIVER={FreeTDS};SERVER=127.0.0.1;PORT=3306;DATABASE=STOCKS;UID=root;PWD=my-secret-password', autocommit=True)
-cursor = mydb.cursor()
+mydb = mysql.connector.connect(user='root', password='root', host='mysql', port="3306", database='STOCKS')
+print("DB connection success")
+cursor = mydb.cursor(buffered=True)
 
 api_key = "76aca232cf48b7732e7d62cf2fd91072"
 cf.set_config_file(theme='pearl', world_readable=False)
@@ -94,7 +94,6 @@ class Stock_Transaction:
         quote = EquityValue.get_stock_quote(self.ticker)
         ratio = EquityValue.get_stock_ratios(self.ticker)
         wallet_balance = cursor.execute("SELECT Wallet_Balance FROM User WHERE User = "+self.user)
-
         if not quote:
             return
         price = quote[0]['price']
@@ -135,25 +134,24 @@ class Stock_Transaction:
 class MoneyTransfer:
     def MoneyTransfer (User1,User2,TransferAmount):
         # Takes the amount in Users Wallets
-        User1Wallet = cursor.execute("SELECT Wallet_value FROM User WHERE User_id = "+User1)
-        User2Wallet = cursor.execute("SELECT Wallet_value FROM User WHERE User_id = "+User2)
+        User1Wallet = cursor.execute("SELECT wallet_balance FROM user_info WHERE user = '"+User1+"';")
+        User2Wallet = cursor.execute("SELECT wallet_balance FROM user_info WHERE user = '"+User2+"';")
 
         # Updates the value in User1 Wallet (sender)
-        cursor.execute("UPDATE User SET Wallet_value = "+(User1Wallet-TransferAmount)+"WHERE User_id = "+User1)
+        cursor.execute("UPDATE user_info SET wallet_balance = "+(User1Wallet-TransferAmount)+"WHERE user = '"+User1+"';")
 
         # Updates value in User2 Wallet (receiver)
-        cursor.execute("UPDATE User SET Wallet_value = "+(User2Wallet-TransferAmount)+"WHERE User_id = "+User2)
-        mydb.commit()
+        cursor.execute("UPDATE user_info SET wallet_balance = "+(User2Wallet-TransferAmount)+"WHERE user = '"+User2+"';")
         mydb.close()
 
 def main():
-    port_value = PortValue()
-    transaction = Stock_Transaction(port_value)
-    while True:
-        if transaction.get_input():
-            transaction.execute()
-        else:
-            break
+    #port_value = PortValue()
+    #transaction = Stock_Transaction(port_value)
+    #transaction.execute()
+
+    MoneyTransfer.MoneyTransfer("Jacob Peterson","Julia Kush", 300)
+
+    mydb.close()
 
 if __name__ == "__main__":
     main()
