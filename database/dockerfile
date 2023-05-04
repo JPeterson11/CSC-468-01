@@ -1,5 +1,5 @@
 FROM mysql:latest
-
-ENV MYSQL_DATABASE STOCKS
-
 COPY ./scripts/ /docker-entrypoint-initdb.d/
+ENV MYSQL_DATABASE=STOCKS
+ENV MYSQL_ROOT_PASSWORD=root
+EXPOSE 3306
