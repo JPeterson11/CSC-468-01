@@ -3,7 +3,7 @@ import cufflinks as cf
 import numpy as np
 import requests
 from datetime import date, datetime
-import mysql.connecter
+import mysql.connector
 
 today = date.today()
 #Connection to the database
