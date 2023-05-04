@@ -6,13 +6,16 @@ const express = require( 'express' ),
   homeController = require( './controllers/homeController' ),
   errorController = require( './controllers/errorController' );
 
+const PORT = 8080;
+const HOST = '0.0.0.0';
+
 app.use(
     express.urlencoded({
         extended: false
         })
     );
 app.use(express.json());
-app.set( 'port', process.env.PORT || 3000 );
+//app.set( 'port', process.env.PORT || 3000 );
 
 app.set( 'view engine', 'ejs' );
 app.use( layouts );
@@ -29,6 +32,6 @@ app.post( '/contact', homeController.postedContactForm );
 app.use( errorController.pageNotFoundError );
 app.use( errorController.internalServerError );
 
-app.listen( app.get( 'port' ), () => {
-  console.log( `Server running at http://localhost:${app.get('port')}` );
+app.listen( PORT, HOST, () => {
+  console.log( `Server running at http://localhost:${PORT}` );
 } );
