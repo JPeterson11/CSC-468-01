@@ -1,21 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api
+  name: python-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: api
+      app: python-app
   template:
     metadata:
       labels:
-        app: api
+        app: python-app
     spec:
       containers:
-        - name: deployment
-          image: jp923870/python
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 5000
-              protocol: TCP
+      - name: python-app
+        image: jp923870/python:latest
+        ports:
+        - containerPort: 8080
