@@ -4,6 +4,7 @@ import numpy as np
 import requests
 from datetime import date, datetime
 import mysql.connector
+import sys
 
 today = date.today()
 #Connection to the database
@@ -36,7 +37,7 @@ class EquityValue:
 class PortValue:
     def __init__(self):
         self.portfolio = {}
-        user = "brandon"
+        user = self
 
     def get_portfolio_value(self):
         total_value = 0
@@ -148,8 +149,16 @@ def main():
     #port_value = PortValue()
     #transaction = Stock_Transaction(port_value)
     #transaction.execute()
-
-    MoneyTransfer.MoneyTransfer("Jacob Peterson","Julia Kush", 300)
+    if len(sys.argv) > 1:
+        if sys.argv[1] == 'MoneyTransfer':
+            MoneyTransfer.MoneyTransfer(sys.argv[2],sys.argv[3], sys.argv[3])
+        elif sys.argv[1] == 'StockInformation':
+            EquityValue.get_stock_quote(sys.argv[2])
+        elif sys.argv[1] == 'StockTransaction':
+            Stock_Transaction.execute(sys.argv[2])
+        else:
+            print("Error no arg passed")
+    
 
     mydb.close()
 
