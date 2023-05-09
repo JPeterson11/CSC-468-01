@@ -8,7 +8,7 @@ import sys
 
 today = date.today()
 #Connection to the database
-mydb = mysql.connector.connect(user='root', password='root', host='mysql', port="3306", database='STOCKS')
+mydb = mysql.connector.connect(host="mysql", user="root", password="root", port="3306", database="STOCKS")
 print("DB connection success")
 cursor = mydb.cursor(buffered=True)
 
